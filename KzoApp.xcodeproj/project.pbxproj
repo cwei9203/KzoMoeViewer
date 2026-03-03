@@ -1,0 +1,363 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		AA0000000000000000001001 /* KzoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000002001 /* KzoApp.swift */; };
+		AA0000000000000000001002 /* RootTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000002002 /* RootTabView.swift */; };
+		AA0000000000000000001003 /* AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000002003 /* AppTheme.swift */; };
+		AA0000000000000000001004 /* AuthSessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000002004 /* AuthSessionStore.swift */; };
+		AA0000000000000000001005 /* DownloadQueueEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000002005 /* DownloadQueueEngine.swift */; };
+		AA0000000000000000001006 /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000002006 /* NetworkClient.swift */; };
+		AA0000000000000000001007 /* BookshelfParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000002007 /* BookshelfParser.swift */; };
+		AA0000000000000000001008 /* DetailParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000002008 /* DetailParser.swift */; };
+		AA0000000000000000001009 /* HTMLParsingSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000002009 /* HTMLParsingSupport.swift */; };
+		AA0000000000000000001010 /* DetailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000002010 /* DetailService.swift */; };
+		AA0000000000000000001011 /* MangaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000002011 /* MangaService.swift */; };
+		AA0000000000000000001012 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000002012 /* LoginView.swift */; };
+		AA0000000000000000001013 /* LoginWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000002013 /* LoginWebView.swift */; };
+		AA0000000000000000001014 /* BookshelfView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000002014 /* BookshelfView.swift */; };
+		AA0000000000000000001015 /* BookshelfViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000002015 /* BookshelfViewModel.swift */; };
+		AA0000000000000000001016 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000002016 /* DetailView.swift */; };
+		AA0000000000000000001017 /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000002017 /* DetailViewModel.swift */; };
+		AA0000000000000000001018 /* DownloadsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000002018 /* DownloadsView.swift */; };
+		AA0000000000000000001019 /* DownloadsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000002019 /* DownloadsViewModel.swift */; };
+		AA0000000000000000001020 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000002020 /* ProfileView.swift */; };
+		AA0000000000000000001021 /* CardContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000002021 /* CardContainer.swift */; };
+		AA0000000000000000001022 /* MangaGridCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000002022 /* MangaGridCard.swift */; };
+		AA0000000000000000001023 /* StatusChip.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000002023 /* StatusChip.swift */; };
+		AA0000000000000000001024 /* DownloadTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000002024 /* DownloadTask.swift */; };
+		AA0000000000000000001025 /* Manga.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000002025 /* Manga.swift */; };
+		AA0000000000000000001026 /* RemoteCoverImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000002026 /* RemoteCoverImage.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		AA0000000000000000000012 /* KzoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KzoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA0000000000000000002001 /* KzoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App/KzoApp.swift; sourceTree = SOURCE_ROOT; };
+		AA0000000000000000002002 /* RootTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App/RootTabView.swift; sourceTree = SOURCE_ROOT; };
+		AA0000000000000000002003 /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App/Theme/AppTheme.swift; sourceTree = SOURCE_ROOT; };
+		AA0000000000000000002004 /* AuthSessionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Core/Auth/AuthSessionStore.swift; sourceTree = SOURCE_ROOT; };
+		AA0000000000000000002005 /* DownloadQueueEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Core/DownloadEngine/DownloadQueueEngine.swift; sourceTree = SOURCE_ROOT; };
+		AA0000000000000000002006 /* NetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Core/Networking/NetworkClient.swift; sourceTree = SOURCE_ROOT; };
+		AA0000000000000000002007 /* BookshelfParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Core/Parsing/BookshelfParser.swift; sourceTree = SOURCE_ROOT; };
+		AA0000000000000000002008 /* DetailParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Core/Parsing/DetailParser.swift; sourceTree = SOURCE_ROOT; };
+		AA0000000000000000002009 /* HTMLParsingSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Core/Parsing/HTMLParsingSupport.swift; sourceTree = SOURCE_ROOT; };
+		AA0000000000000000002010 /* DetailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Core/Services/DetailService.swift; sourceTree = SOURCE_ROOT; };
+		AA0000000000000000002011 /* MangaService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Core/Services/MangaService.swift; sourceTree = SOURCE_ROOT; };
+		AA0000000000000000002012 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Features/Auth/LoginView.swift; sourceTree = SOURCE_ROOT; };
+		AA0000000000000000002013 /* LoginWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Features/Auth/LoginWebView.swift; sourceTree = SOURCE_ROOT; };
+		AA0000000000000000002014 /* BookshelfView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Features/Bookshelf/BookshelfView.swift; sourceTree = SOURCE_ROOT; };
+		AA0000000000000000002015 /* BookshelfViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Features/Bookshelf/BookshelfViewModel.swift; sourceTree = SOURCE_ROOT; };
+		AA0000000000000000002016 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Features/Detail/DetailView.swift; sourceTree = SOURCE_ROOT; };
+		AA0000000000000000002017 /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Features/Detail/DetailViewModel.swift; sourceTree = SOURCE_ROOT; };
+		AA0000000000000000002018 /* DownloadsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Features/Downloads/DownloadsView.swift; sourceTree = SOURCE_ROOT; };
+		AA0000000000000000002019 /* DownloadsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Features/Downloads/DownloadsViewModel.swift; sourceTree = SOURCE_ROOT; };
+		AA0000000000000000002020 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Features/Profile/ProfileView.swift; sourceTree = SOURCE_ROOT; };
+		AA0000000000000000002021 /* CardContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared/Components/CardContainer.swift; sourceTree = SOURCE_ROOT; };
+		AA0000000000000000002022 /* MangaGridCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared/Components/MangaGridCard.swift; sourceTree = SOURCE_ROOT; };
+		AA0000000000000000002023 /* StatusChip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared/Components/StatusChip.swift; sourceTree = SOURCE_ROOT; };
+		AA0000000000000000002024 /* DownloadTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared/Models/DownloadTask.swift; sourceTree = SOURCE_ROOT; };
+		AA0000000000000000002025 /* Manga.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared/Models/Manga.swift; sourceTree = SOURCE_ROOT; };
+		AA0000000000000000002026 /* RemoteCoverImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared/Components/RemoteCoverImage.swift; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		AA0000000000000000000010 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		AA0000000000000000000002 = {
+			isa = PBXGroup;
+			children = (
+				AA0000000000000000000004 /* Sources */,
+				AA0000000000000000000003 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		AA0000000000000000000003 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AA0000000000000000000012 /* KzoApp.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		AA0000000000000000000004 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				AA0000000000000000002001 /* KzoApp.swift */,
+				AA0000000000000000002002 /* RootTabView.swift */,
+				AA0000000000000000002003 /* AppTheme.swift */,
+				AA0000000000000000002004 /* AuthSessionStore.swift */,
+				AA0000000000000000002005 /* DownloadQueueEngine.swift */,
+				AA0000000000000000002006 /* NetworkClient.swift */,
+				AA0000000000000000002007 /* BookshelfParser.swift */,
+				AA0000000000000000002008 /* DetailParser.swift */,
+				AA0000000000000000002009 /* HTMLParsingSupport.swift */,
+				AA0000000000000000002010 /* DetailService.swift */,
+				AA0000000000000000002011 /* MangaService.swift */,
+				AA0000000000000000002012 /* LoginView.swift */,
+				AA0000000000000000002013 /* LoginWebView.swift */,
+				AA0000000000000000002014 /* BookshelfView.swift */,
+				AA0000000000000000002015 /* BookshelfViewModel.swift */,
+				AA0000000000000000002016 /* DetailView.swift */,
+				AA0000000000000000002017 /* DetailViewModel.swift */,
+				AA0000000000000000002018 /* DownloadsView.swift */,
+				AA0000000000000000002019 /* DownloadsViewModel.swift */,
+				AA0000000000000000002020 /* ProfileView.swift */,
+				AA0000000000000000002021 /* CardContainer.swift */,
+				AA0000000000000000002022 /* MangaGridCard.swift */,
+				AA0000000000000000002023 /* StatusChip.swift */,
+				AA0000000000000000002026 /* RemoteCoverImage.swift */,
+				AA0000000000000000002024 /* DownloadTask.swift */,
+				AA0000000000000000002025 /* Manga.swift */,
+			);
+			name = Sources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		AA0000000000000000000008 /* KzoApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AA0000000000000000000009 /* Build configuration list for PBXNativeTarget "KzoApp" */;
+			buildPhases = (
+				AA000000000000000000000F /* Sources */,
+				AA0000000000000000000010 /* Frameworks */,
+				AA0000000000000000000011 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = KzoApp;
+			productName = KzoApp;
+			productReference = AA0000000000000000000012 /* KzoApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		AA0000000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					AA0000000000000000000008 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+				};
+			};
+			buildConfigurationList = AA000000000000000000000A /* Build configuration list for PBXProject "KzoApp" */;
+			compatibilityVersion = "Xcode 15.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = AA0000000000000000000002;
+			productRefGroup = AA0000000000000000000003 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				AA0000000000000000000008 /* KzoApp */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		AA0000000000000000000011 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		AA000000000000000000000F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA0000000000000000001001 /* KzoApp.swift in Sources */,
+				AA0000000000000000001002 /* RootTabView.swift in Sources */,
+				AA0000000000000000001003 /* AppTheme.swift in Sources */,
+				AA0000000000000000001004 /* AuthSessionStore.swift in Sources */,
+				AA0000000000000000001005 /* DownloadQueueEngine.swift in Sources */,
+				AA0000000000000000001006 /* NetworkClient.swift in Sources */,
+				AA0000000000000000001007 /* BookshelfParser.swift in Sources */,
+				AA0000000000000000001008 /* DetailParser.swift in Sources */,
+				AA0000000000000000001009 /* HTMLParsingSupport.swift in Sources */,
+				AA0000000000000000001010 /* DetailService.swift in Sources */,
+				AA0000000000000000001011 /* MangaService.swift in Sources */,
+				AA0000000000000000001012 /* LoginView.swift in Sources */,
+				AA0000000000000000001013 /* LoginWebView.swift in Sources */,
+				AA0000000000000000001014 /* BookshelfView.swift in Sources */,
+				AA0000000000000000001015 /* BookshelfViewModel.swift in Sources */,
+				AA0000000000000000001016 /* DetailView.swift in Sources */,
+				AA0000000000000000001017 /* DetailViewModel.swift in Sources */,
+				AA0000000000000000001018 /* DownloadsView.swift in Sources */,
+				AA0000000000000000001019 /* DownloadsViewModel.swift in Sources */,
+				AA0000000000000000001020 /* ProfileView.swift in Sources */,
+				AA0000000000000000001021 /* CardContainer.swift in Sources */,
+				AA0000000000000000001022 /* MangaGridCard.swift in Sources */,
+				AA0000000000000000001023 /* StatusChip.swift in Sources */,
+				AA0000000000000000001024 /* DownloadTask.swift in Sources */,
+				AA0000000000000000001025 /* Manga.swift in Sources */,
+				AA0000000000000000001026 /* RemoteCoverImage.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		AA000000000000000000000B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		AA000000000000000000000C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		AA000000000000000000000D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.creepnuts.kzoapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		AA000000000000000000000E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.creepnuts.kzoapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		AA0000000000000000000009 /* Build configuration list for PBXNativeTarget "KzoApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AA000000000000000000000D /* Debug */,
+				AA000000000000000000000E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AA000000000000000000000A /* Build configuration list for PBXProject "KzoApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AA000000000000000000000B /* Debug */,
+				AA000000000000000000000C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = AA0000000000000000000001 /* Project object */;
+}
