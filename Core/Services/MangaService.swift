@@ -37,7 +37,8 @@ final class MangaService: MangaServicing {
 
         // Fallback for first page only: if list route is temporarily unavailable, use homepage.
         if normalizedPage == 1 {
-            return await fetchBooks(path: "/", queryItems: nil)
+            let fallback = await fetchBooks(path: "/", queryItems: nil)
+            return fallback
         }
         return []
     }
@@ -48,7 +49,6 @@ final class MangaService: MangaServicing {
         guard !trimmed.isEmpty else {
             return await loadBookshelf(page: normalizedPage)
         }
-        print("[MangaService] search keyword=\(trimmed)")
         if let pagePath = makeListPath(keyword: trimmed, page: normalizedPage) {
             let pageResults = await fetchBooksByAbsolutePath(path: pagePath)
             if Task.isCancelled { return [] }
@@ -95,8 +95,6 @@ final class MangaService: MangaServicing {
                     ]
                 )
                 let parsed = parser.parseBooks(from: html)
-                print("[MangaService] url=\(url.absoluteString)")
-                print("[MangaService] htmlLength=\(html.count) hasDispDivInfo=\(html.contains("disp_divinfo(")) parsed=\(parsed.count)")
                 if parsed.count > best.count {
                     best = parsed
                 }
@@ -104,7 +102,6 @@ final class MangaService: MangaServicing {
                 if isCancellation(error) || Task.isCancelled {
                     return best
                 }
-                print("[MangaService] request failed endpoint=\(endpoint.absoluteString) path=\(path) error=\(error)")
                 continue
             }
         }
@@ -144,7 +141,6 @@ final class MangaService: MangaServicing {
                     headers: ["Referer": endpoint.absoluteString + "/"]
                 )
                 let parsed = parser.parseBooks(from: html)
-                print("[MangaService] absUrl=\(url.absoluteString) htmlLength=\(html.count) parsed=\(parsed.count)")
                 if parsed.count > best.count {
                     best = parsed
                 }
@@ -152,7 +148,6 @@ final class MangaService: MangaServicing {
                 if isCancellation(error) || Task.isCancelled {
                     return best
                 }
-                print("[MangaService] abs request failed endpoint=\(endpoint.absoluteString) path=\(path) error=\(error)")
                 continue
             }
         }

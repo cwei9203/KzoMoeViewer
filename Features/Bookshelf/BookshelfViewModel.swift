@@ -23,18 +23,18 @@ final class BookshelfViewModel: ObservableObject {
         hasLoadedInitially = true
 
         if currentKeyword.isEmpty {
-            await startQuery(keyword: "")
+            await startQuery(keyword: "", trigger: "initial", resetBeforeLoad: true)
         } else {
-            await startQuery(keyword: currentKeyword)
+            await startQuery(keyword: currentKeyword, trigger: "initial", resetBeforeLoad: true)
         }
     }
 
     func refresh() async {
-        await startQuery(keyword: "")
+        await startQuery(keyword: "", trigger: "refresh", resetBeforeLoad: false)
     }
 
     func search(keyword: String) async {
-        await startQuery(keyword: keyword)
+        await startQuery(keyword: keyword, trigger: "search", resetBeforeLoad: true)
     }
 
     func loadNextIfNeeded(currentItem: Manga?) async {
@@ -58,7 +58,9 @@ final class BookshelfViewModel: ObservableObject {
             result = await service.searchBooks(keyword: keyword, page: pageToLoad)
         }
 
-        guard currentRequest == requestID else { return }
+        guard currentRequest == requestID else {
+            return
+        }
 
         if result.isEmpty {
             hasMore = false
@@ -69,27 +71,42 @@ final class BookshelfViewModel: ObservableObject {
         nextPage += 1
     }
 
-    private func startQuery(keyword: String) async {
+    private func startQuery(keyword: String, trigger: String, resetBeforeLoad: Bool) async {
         requestID &+= 1
         let currentRequest = requestID
 
         let trimmed = keyword.trimmingCharacters(in: .whitespacesAndNewlines)
         isLoading = true
         isLoadingMore = false
-        hasMore = true
-        nextPage = 1
-        mangas = []
-        seenKeys.removeAll()
+        if resetBeforeLoad {
+            hasMore = true
+            nextPage = 1
+            mangas = []
+            seenKeys.removeAll()
+        }
         currentKeyword = trimmed
 
-        let result: [Manga]
-        if trimmed.isEmpty {
-            result = await service.loadBookshelf(page: 1)
-        } else {
-            result = await service.searchBooks(keyword: trimmed, page: 1)
+        // Run network fetch in an unstructured task so pull-to-refresh cancellation
+        // does not immediately cancel the HTTP request.
+        let result = await Task { [service] in
+            if trimmed.isEmpty {
+                return await service.loadBookshelf(page: 1)
+            } else {
+                return await service.searchBooks(keyword: trimmed, page: 1)
+            }
+        }.value
+
+        guard currentRequest == requestID else {
+            return
         }
 
-        guard currentRequest == requestID else { return }
+        if !resetBeforeLoad {
+            mangas = []
+            seenKeys.removeAll()
+            hasMore = true
+            nextPage = 1
+        }
+
         appendUnique(result)
         hasMore = !result.isEmpty
         nextPage = 2
