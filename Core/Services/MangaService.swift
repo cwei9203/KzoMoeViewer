@@ -1,8 +1,8 @@
 import Foundation
 
 protocol MangaServicing {
-    func loadBookshelf() async -> [Manga]
-    func searchBooks(keyword: String) async -> [Manga]
+    func loadBookshelf(page: Int) async -> [Manga]
+    func searchBooks(keyword: String, page: Int) async -> [Manga]
 }
 
 final class MangaService: MangaServicing {
@@ -27,41 +27,51 @@ final class MangaService: MangaServicing {
         self.parser = parser
     }
 
-    func loadBookshelf() async -> [Manga] {
-        await fetchBooks(path: "/", queryItems: nil)
+    func loadBookshelf(page: Int) async -> [Manga] {
+        let normalizedPage = max(1, page)
+        let listResults = await fetchBooksByAbsolutePath(path: makeHomeListPath(page: normalizedPage))
+        if Task.isCancelled { return [] }
+        if !listResults.isEmpty {
+            return listResults
+        }
+
+        // Fallback for first page only: if list route is temporarily unavailable, use homepage.
+        if normalizedPage == 1 {
+            return await fetchBooks(path: "/", queryItems: nil)
+        }
+        return []
     }
 
-    func searchBooks(keyword: String) async -> [Manga] {
+    func searchBooks(keyword: String, page: Int) async -> [Manga] {
+        let normalizedPage = max(1, page)
         let trimmed = keyword.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else {
-            return await loadBookshelf()
+            return await loadBookshelf(page: normalizedPage)
         }
         print("[MangaService] search keyword=\(trimmed)")
-        if let mainPath = makeListPath(keyword: trimmed, page: nil) {
-            let primaryResults = await fetchBooksByAbsolutePath(path: mainPath)
-            if !primaryResults.isEmpty {
-                let filtered = filterByRelevance(results: primaryResults, keyword: trimmed)
-                return filtered.isEmpty ? primaryResults : filtered
+        if let pagePath = makeListPath(keyword: trimmed, page: normalizedPage) {
+            let pageResults = await fetchBooksByAbsolutePath(path: pagePath)
+            if Task.isCancelled { return [] }
+            if !pageResults.isEmpty {
+                let filtered = filterByRelevance(results: pageResults, keyword: trimmed)
+                return filtered.isEmpty ? pageResults : filtered
             }
         }
 
-        // Fallback: pull paged /l/... results and merge.
-        let pagedResults = await fetchPagedListResults(keyword: trimmed, maxPages: 8)
-        var merged = mergeUnique(pagedResults)
-
-        // Final fallback if /l/ route is temporarily unavailable.
-        if merged.isEmpty {
+        // Fallback for first page only if /l/ route is temporarily unavailable.
+        if normalizedPage == 1 {
             let encoded = trimmed.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? trimmed
             let listResults = await fetchBooks(
                 path: "/list.php",
                 queryItems: [URLQueryItem(name: "s", value: trimmed)],
                 refererPath: "/list.php?s=\(encoded)"
             )
-            merged = mergeUnique(listResults)
+            if Task.isCancelled { return [] }
+            let filtered = filterByRelevance(results: listResults, keyword: trimmed)
+            return filtered.isEmpty ? listResults : filtered
         }
 
-        let filtered = filterByRelevance(results: merged, keyword: trimmed)
-        return filtered.isEmpty ? merged : filtered
+        return []
     }
 
     private func fetchBooks(
@@ -91,6 +101,9 @@ final class MangaService: MangaServicing {
                     best = parsed
                 }
             } catch {
+                if isCancellation(error) || Task.isCancelled {
+                    return best
+                }
                 print("[MangaService] request failed endpoint=\(endpoint.absoluteString) path=\(path) error=\(error)")
                 continue
             }
@@ -108,39 +121,16 @@ final class MangaService: MangaServicing {
         return exactTitle + authorMatches + remaining
     }
 
-    private func fetchPagedListResults(keyword: String, maxPages: Int) async -> [Manga] {
-        var merged: [Manga] = []
-        var emptyCount = 0
-
-        for page in 1...maxPages {
-            guard let pagePath = makeListPath(keyword: keyword, page: page) else { continue }
-            let pageResults = await fetchBooksByAbsolutePath(path: pagePath)
-            print("[MangaService] pagePath=\(pagePath) parsed=\(pageResults.count)")
-
-            if pageResults.isEmpty {
-                emptyCount += 1
-                if emptyCount >= 2 {
-                    break
-                }
-                continue
-            }
-
-            emptyCount = 0
-            merged = mergeUnique(merged + pageResults)
-        }
-
-        return merged
-    }
-
-    private func makeListPath(keyword: String, page: Int?) -> String? {
+    private func makeListPath(keyword: String, page: Int) -> String? {
         guard let encodedKeyword = keyword.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) else {
             return nil
         }
         let base = "/l/\(encodedKeyword),\(SearchDefaults.region),\(SearchDefaults.status),\(SearchDefaults.order),\(SearchDefaults.language),\(SearchDefaults.length),\(SearchDefaults.bl),\(SearchDefaults.color),\(SearchDefaults.hd)"
-        if let page {
-            return "\(base)/\(page).htm"
-        }
-        return "\(base)/"
+        return "\(base)/\(max(1, page)).htm"
+    }
+
+    private func makeHomeListPath(page: Int) -> String {
+        "/l/--/\(max(1, page)).htm"
     }
 
     private func fetchBooksByAbsolutePath(path: String) async -> [Manga] {
@@ -159,6 +149,9 @@ final class MangaService: MangaServicing {
                     best = parsed
                 }
             } catch {
+                if isCancellation(error) || Task.isCancelled {
+                    return best
+                }
                 print("[MangaService] abs request failed endpoint=\(endpoint.absoluteString) path=\(path) error=\(error)")
                 continue
             }
@@ -166,18 +159,15 @@ final class MangaService: MangaServicing {
         return best
     }
 
-    private func mergeUnique(_ input: [Manga]) -> [Manga] {
-        var seen = Set<String>()
-        var output: [Manga] = []
-        output.reserveCapacity(input.count)
-
-        for manga in input {
-            let key = "\(manga.path ?? "")|\(normalize(manga.title))|\(normalize(manga.author))"
-            if seen.insert(key).inserted {
-                output.append(manga)
-            }
+    private func isCancellation(_ error: Error) -> Bool {
+        if error is CancellationError {
+            return true
         }
-        return output
+        if let urlError = error as? URLError, urlError.code == .cancelled {
+            return true
+        }
+        let nsError = error as NSError
+        return nsError.domain == NSURLErrorDomain && nsError.code == NSURLErrorCancelled
     }
 
     private func normalize(_ text: String) -> String {

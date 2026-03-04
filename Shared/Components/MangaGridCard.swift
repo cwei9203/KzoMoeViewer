@@ -6,17 +6,7 @@ struct MangaGridCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
-            ZStack(alignment: .topTrailing) {
-                coverView
-
-                Text(manga.status)
-                    .font(.system(size: 9, weight: .bold))
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 4)
-                    .background(Capsule().fill(AppTheme.Colors.textPrimary))
-                    .foregroundStyle(.white)
-                    .padding(8)
-            }
+            coverView
 
             Text(manga.title)
                 .font(.caption.weight(.semibold))

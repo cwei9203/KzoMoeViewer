@@ -5,37 +5,67 @@ struct BookshelfView: View {
     @State private var keyword = ""
     @FocusState private var isSearchFocused: Bool
 
-    private let columns = [
-        GridItem(.adaptive(minimum: 80, maximum: 110), spacing: 10)
-    ]
+    private let columns = Array(
+        repeating: GridItem(.flexible(minimum: 0, maximum: .infinity), spacing: 10),
+        count: 3
+    )
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: AppTheme.Spacing.l) {
-                searchBar
-                grid
+        ZStack {
+            AppTheme.Colors.background
+                .ignoresSafeArea()
+
+            ScrollView {
+                LazyVStack(alignment: .leading, spacing: AppTheme.Spacing.l, pinnedViews: [.sectionHeaders]) {
+                    Section {
+                        grid
+                    } header: {
+                        stickySearchHeader
+                            .zIndex(10)
+                    }
+                }
+                .padding(.horizontal, AppTheme.Spacing.l)
+                .padding(.bottom, AppTheme.Spacing.l)
             }
-            .padding(AppTheme.Spacing.l)
         }
-        .background(AppTheme.Colors.background)
-        .navigationTitle("Home")
-        .navigationBarTitleDisplayMode(.large)
+        .toolbar(.hidden, for: .navigationBar)
         .onAppear {
             Task {
-                if keyword.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                    await viewModel.refresh()
-                } else {
-                    await viewModel.search(keyword: keyword)
-                }
+                await viewModel.loadInitialIfNeeded()
             }
         }
         .refreshable {
-            if keyword.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            let trimmed = keyword.trimmingCharacters(in: .whitespacesAndNewlines)
+            if trimmed.isEmpty {
                 await viewModel.refresh()
             } else {
-                await viewModel.search(keyword: keyword)
+                await viewModel.search(keyword: trimmed)
             }
         }
+    }
+
+    private var stickySearchHeader: some View {
+        VStack(spacing: 0) {
+            searchBar
+                .padding(.top, AppTheme.Spacing.s)
+                .padding(.bottom, AppTheme.Spacing.s)
+        }
+        .background(AppTheme.Colors.background)
+        .overlay(alignment: .top) {
+            AppTheme.Colors.background
+                .frame(height: topSafeAreaInset)
+                .offset(y: -topSafeAreaInset)
+        }
+    }
+
+    private var topSafeAreaInset: CGFloat {
+        guard
+            let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+            let window = windowScene.windows.first(where: \.isKeyWindow)
+        else {
+            return 0
+        }
+        return window.safeAreaInsets.top
     }
 
     private var searchBar: some View {
@@ -51,16 +81,8 @@ struct BookshelfView: View {
                 .onSubmit {
                     triggerSearch()
                 }
-                .onChange(of: isSearchFocused) { focused in
-                    if !focused {
-                        triggerSearch()
-                    }
-                }
             Spacer()
-            if viewModel.isLoading {
-                ProgressView()
-                    .controlSize(.small)
-            } else if keyword.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            if keyword.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                 Image(systemName: "slider.horizontal.3")
                     .foregroundStyle(AppTheme.Colors.textMuted)
             } else {
@@ -84,7 +106,13 @@ struct BookshelfView: View {
 
     private var grid: some View {
         VStack(spacing: AppTheme.Spacing.l) {
-            if !viewModel.isLoading && viewModel.mangas.isEmpty {
+            if viewModel.isLoading && viewModel.mangas.isEmpty {
+                LazyVGrid(columns: columns, spacing: AppTheme.Spacing.m) {
+                    ForEach(0..<12, id: \.self) { _ in
+                        skeletonCard
+                    }
+                }
+            } else if !viewModel.isLoading && viewModel.mangas.isEmpty {
                 CardContainer {
                     VStack(alignment: .leading, spacing: 6) {
                         Text("没有匹配结果")
@@ -102,9 +130,53 @@ struct BookshelfView: View {
                             MangaGridCard(manga: manga)
                         }
                         .buttonStyle(.plain)
+                        .onAppear {
+                            Task {
+                                await viewModel.loadNextIfNeeded(currentItem: manga)
+                            }
+                        }
                     }
                 }
+                loadMoreFooter
             }
+        }
+    }
+
+    private var skeletonCard: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .fill(Color(hex: 0xE2E8F0))
+                .aspectRatio(142.0 / 202.0, contentMode: .fit)
+                .modifier(SkeletonShimmer())
+
+            RoundedRectangle(cornerRadius: 4, style: .continuous)
+                .fill(Color(hex: 0xE2E8F0))
+                .frame(height: 12)
+                .modifier(SkeletonShimmer())
+
+            RoundedRectangle(cornerRadius: 4, style: .continuous)
+                .fill(Color(hex: 0xE2E8F0))
+                .frame(width: 56, height: 10)
+                .modifier(SkeletonShimmer())
+        }
+        .opacity(0.95)
+    }
+
+    @ViewBuilder
+    private var loadMoreFooter: some View {
+        if viewModel.isLoadingMore {
+            HStack {
+                Spacer()
+                ProgressView()
+                Spacer()
+            }
+            .padding(.top, AppTheme.Spacing.s)
+        } else if !viewModel.hasMore && !viewModel.mangas.isEmpty {
+            Text("没有更多了")
+                .font(.caption)
+                .foregroundStyle(AppTheme.Colors.textMuted)
+                .frame(maxWidth: .infinity)
+                .padding(.top, AppTheme.Spacing.s)
         }
     }
 
@@ -120,5 +192,44 @@ struct BookshelfView: View {
                 await viewModel.search(keyword: trimmed)
             }
         }
+    }
+}
+
+private struct SkeletonShimmer: ViewModifier {
+    @State private var phase: CGFloat = -1.2
+
+    func body(content: Content) -> some View {
+        content
+            .overlay {
+                GeometryReader { proxy in
+                    let width = max(proxy.size.width, 1)
+                    let highlightWidth = width * 1.8
+
+                    LinearGradient(
+                        colors: [
+                            .clear,
+                            .white.opacity(0.16),
+                            .white.opacity(0.38),
+                            .white.opacity(0.16),
+                            .clear
+                        ],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                    .frame(width: highlightWidth)
+                    .offset(x: phase * width * 1.6)
+                }
+                .mask(content)
+                .allowsHitTesting(false)
+            }
+            .onAppear {
+                phase = -1.2
+                withAnimation(.easeInOut(duration: 1.4).repeatForever(autoreverses: false)) {
+                    phase = 1.2
+                }
+            }
+            .onDisappear {
+                phase = -1.2
+            }
     }
 }

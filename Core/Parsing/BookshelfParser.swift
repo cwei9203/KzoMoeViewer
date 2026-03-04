@@ -8,76 +8,8 @@ struct BookshelfParser: BookshelfParsing {
     func parseBooks(from html: String) -> [Manga] {
         guard html.contains("<html") else { return [] }
 
-        let scriptResults = parseDispDivInfoScripts(from: html)
-        if !scriptResults.isEmpty {
-            return scriptResults
-        }
-
-        let anchorPattern = "<a[^>]*href=[\"']([^\"']+)[\"'][^>]*>(.*?)</a>"
-        guard let regex = try? NSRegularExpression(pattern: anchorPattern, options: [.caseInsensitive, .dotMatchesLineSeparators]) else {
-            return []
-        }
-        let range = NSRange(html.startIndex..., in: html)
-        let matches = regex.matches(in: html, options: [], range: range)
-
-        var results: [Manga] = []
-        var seenTitles = Set<String>()
-
-        for (index, match) in matches.enumerated() {
-            guard
-                let hrefRange = Range(match.range(at: 1), in: html),
-                let contentRange = Range(match.range(at: 2), in: html)
-            else { continue }
-
-            let href = String(html[hrefRange])
-            let loweredHref = href.lowercased()
-            let isComicDetailLink =
-                loweredHref.contains("/c/") ||
-                loweredHref.contains("comic") ||
-                loweredHref.contains("manga")
-            guard isComicDetailLink else { continue }
-
-            let contentHTML = String(html[contentRange])
-            let titleFromAttr = HTMLParsingSupport.firstMatch(in: contentHTML, pattern: "title=[\"']([^\"']+)[\"']")
-            let titleFromInner = HTMLParsingSupport.stripTags(contentHTML)
-            let title = (titleFromAttr ?? titleFromInner)
-                .replacingOccurrences(of: "\\s+", with: " ", options: .regularExpression)
-                .trimmingCharacters(in: .whitespacesAndNewlines)
-
-            guard !title.isEmpty, title.count > 1, title.count < 80 else { continue }
-            guard !seenTitles.contains(title) else { continue }
-            seenTitles.insert(title)
-
-            let author = HTMLParsingSupport.firstMatch(in: contentHTML, pattern: "(?:author|by)\\s*[:：]?\\s*([^<\\n]+)") ?? "Unknown"
-            let status: String
-            let lowered = contentHTML.lowercased()
-            if lowered.contains("completed") || lowered.contains("finished") {
-                status = "FINISHED"
-            } else if lowered.contains("new") || lowered.contains("latest") {
-                status = "NEW"
-            } else {
-                status = "READING"
-            }
-
-            results.append(
-                Manga(
-                    id: (href.hashValue & Int.max) + index,
-                    title: title,
-                    author: HTMLParsingSupport.stripTags(author),
-                    coverName: "book.closed.fill",
-                    coverURL: nil,
-                    status: status,
-                    updateInfo: nil,
-                    path: href
-                )
-            )
-
-            if results.count >= 24 {
-                break
-            }
-        }
-
-        return results
+        // Treat only disp_divinfo(...) calls as valid book entries.
+        return parseDispDivInfoScripts(from: html)
     }
 
     private func parseDispDivInfoScripts(from html: String) -> [Manga] {
@@ -110,6 +42,7 @@ struct BookshelfParser: BookshelfParsing {
             let wordUpdate = decodeJSConcatString(args[12])
 
             guard !bookURL.isEmpty else { continue }
+            guard isBookDetailURL(bookURL) else { continue }
 
             let cleanName = HTMLParsingSupport.stripTags(name)
             guard !cleanName.isEmpty else { continue }
@@ -172,6 +105,7 @@ struct BookshelfParser: BookshelfParsing {
                 let wordStatus = capture(match, in: html, at: 6),
                 let wordUpdate = capture(match, in: html, at: 7)
             else { continue }
+            guard isBookDetailURL(bookURL) else { continue }
 
             let cleanName = HTMLParsingSupport.stripTags(name)
             guard !cleanName.isEmpty else { continue }
@@ -398,5 +332,19 @@ struct BookshelfParser: BookshelfParsing {
             parts.append(tail)
         }
         return parts
+    }
+
+    private func isBookDetailURL(_ raw: String) -> Bool {
+        let lowered = raw.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
+        if lowered.isEmpty || lowered == "#" || lowered.hasPrefix("javascript:") {
+            return false
+        }
+        if lowered.range(of: #"/c/[^/?#]+"#, options: .regularExpression) != nil {
+            return true
+        }
+        if lowered.range(of: #"/(?:comic|manga|book)/\d+"#, options: .regularExpression) != nil {
+            return true
+        }
+        return false
     }
 }
