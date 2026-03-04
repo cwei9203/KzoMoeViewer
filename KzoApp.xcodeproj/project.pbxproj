@@ -33,6 +33,7 @@
 		AA0000000000000000001024 /* DownloadTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000002024 /* DownloadTask.swift */; };
 		AA0000000000000000001025 /* Manga.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000002025 /* Manga.swift */; };
 		AA0000000000000000001026 /* RemoteCoverImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000002026 /* RemoteCoverImage.swift */; };
+		AA0000000000000000001027 /* DownloadService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000002027 /* DownloadService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -63,6 +64,7 @@
 		AA0000000000000000002024 /* DownloadTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared/Models/DownloadTask.swift; sourceTree = SOURCE_ROOT; };
 		AA0000000000000000002025 /* Manga.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared/Models/Manga.swift; sourceTree = SOURCE_ROOT; };
 		AA0000000000000000002026 /* RemoteCoverImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared/Components/RemoteCoverImage.swift; sourceTree = SOURCE_ROOT; };
+		AA0000000000000000002027 /* DownloadService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Core/Services/DownloadService.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +123,7 @@
 				AA0000000000000000002026 /* RemoteCoverImage.swift */,
 				AA0000000000000000002024 /* DownloadTask.swift */,
 				AA0000000000000000002025 /* Manga.swift */,
+				AA0000000000000000002027 /* DownloadService.swift */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -219,6 +222,7 @@
 				AA0000000000000000001024 /* DownloadTask.swift in Sources */,
 				AA0000000000000000001025 /* Manga.swift in Sources */,
 				AA0000000000000000001026 /* RemoteCoverImage.swift in Sources */,
+				AA0000000000000000001027 /* DownloadService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -39,6 +39,35 @@ struct MangaChapter: Identifiable, Hashable {
     let title: String
     let date: String
     let isFree: Bool
+    
+    // 下载相关字段
+    let volID: Int          // 卷ID
+    let sizeMB: Double      // 文件大小(MB)
+    let pageCount: Int      // 页数
+    let isCompleted: Bool   // 是否已完成制作
+    let isNew: Bool         // 是否最近更新
+    
+    init(
+        id: Int,
+        title: String,
+        date: String,
+        isFree: Bool,
+        volID: Int = 0,
+        sizeMB: Double = 0,
+        pageCount: Int = 0,
+        isCompleted: Bool = false,
+        isNew: Bool = false
+    ) {
+        self.id = id
+        self.title = title
+        self.date = date
+        self.isFree = isFree
+        self.volID = volID
+        self.sizeMB = sizeMB
+        self.pageCount = pageCount
+        self.isCompleted = isCompleted
+        self.isNew = isNew
+    }
 }
 
 struct MangaDetail: Hashable {

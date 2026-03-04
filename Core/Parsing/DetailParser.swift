@@ -176,11 +176,19 @@ struct DetailParser: DetailParsing {
             if name.isEmpty { continue }
 
             let date = fields.count > 13 ? fields[13].trimmingCharacters(in: .whitespacesAndNewlines) : "Unknown"
-            let sizeCandidates = [8, 9, 10, 11].compactMap { idx -> Double? in
-                guard idx < fields.count else { return nil }
-                return Double(fields[idx])
-            }
-            let isFree = sizeCandidates.contains(where: { $0 > 0 })
+            
+            // 解析下载相关字段
+            // fields[6] = pageCount, fields[8] = zipSize, fields[9] = mobiSize, fields[10] = pushSize, fields[11] = epubSize
+            let pageCount = fields.count > 6 ? (Int(fields[6]) ?? 0) : 0
+            let mobiSize = fields.count > 9 ? (Double(fields[9]) ?? 0) : 0
+            let epubSize = fields.count > 11 ? (Double(fields[11]) ?? 0) : 0
+            let sizeMB = max(mobiSize, epubSize)
+            
+            // fields[1] = isNew (2=最近更新), fields[2] = isCompleted (1=已完成)
+            let isNew = fields.count > 1 ? (Int(fields[1]) ?? 0) == 2 : false
+            let isCompleted = fields.count > 2 ? (Int(fields[2]) ?? 0) == 1 : false
+            
+            let isFree = sizeMB > 0
             let title = type.isEmpty ? name : "\(type) \(name)"
 
             chapters.append(
@@ -188,7 +196,12 @@ struct DetailParser: DetailParsing {
                     id: volID,
                     title: title,
                     date: date.isEmpty ? "Unknown" : date,
-                    isFree: isFree
+                    isFree: isFree,
+                    volID: volID,
+                    sizeMB: sizeMB,
+                    pageCount: pageCount,
+                    isCompleted: isCompleted,
+                    isNew: isNew
                 )
             )
         }

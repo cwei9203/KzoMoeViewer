@@ -12,6 +12,7 @@ final class NetworkClient {
 
     private let session: URLSession
     private var cookieHeader: String = ""
+    var currentCookie: String { cookieHeader }  // 公开访问器
     private let userAgent =
         "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
 
